@@ -1,3 +1,9 @@
+//Name: Yang Yi
+//Date: 02/03/14
+//Professor: Brian Chen 
+//Class: CSE 002
+
+
 public class Arithmetic {
 	public static void main(String[] args) {
 		//Number of pairs of socks and Cost per pair of socks
