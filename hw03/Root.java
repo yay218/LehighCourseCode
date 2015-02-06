@@ -4,9 +4,9 @@ public class Root {
     	Scanner myScanner;
         myScanner = new Scanner(System.in);
         System.out.print("Enter a double, and I print its cube root: ");
-        Double x = myScanner.nextDouble();
-        Double guess = x/3;
-        Double guess1,guess2,guess3,guess4,guess5;
+        double x = myScanner.nextDouble();
+        double guess = x/3;
+        double guess1,guess2,guess3,guess4,guess5;
         guess1 = (2*guess*guess*guess+x)/(3*guess*guess);
         guess2 = (2*guess1*guess1*guess1+x)/(3*guess1*guess1);
         guess3 = (2*guess2*guess2*guess2+x)/(3*guess2*guess2);
