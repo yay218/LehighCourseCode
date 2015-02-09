@@ -3,11 +3,10 @@
 //Date: 02/06/15
 //Professor: Brian Chen 
 //Class: CSE 002
-import java.util.Scanner;
+import java.util.Scanner; //Scanner is in the java.util package
 public class FourDigits {
     public static void main (String[] args) { // main method required for every Java program
-    	Scanner myScanner;
-        myScanner = new Scanner(System.in);
+    	Scanner myScanner = new Scanner(System.in); //Create a Scanner object
         System.out.print("Enter a double and I display the four digits to the right of the decimal point: "); //Let user enter the number
         double number = myScanner.nextDouble(); //Enter the number
         double number1; //the decimal number1
@@ -19,5 +18,5 @@ public class FourDigits {
 	    digit2=(number2%1000)/100; //Divide the number2 by 1000 and take the remainder and then divide by 100 thus get the second digit
 	    digit1=(number2%10000)/1000; //Divide the number2 by 10000 and take the remainder and then divide by 100 thus get the first digit
 	    System.out.println("The four digits are "+digit1+""+digit2+""+digit3+""+digit4); //print the four digits
-    }
-}
+    } //end of main method 
+} //end of class

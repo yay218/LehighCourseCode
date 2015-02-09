@@ -3,13 +3,12 @@
 //Date: 02/06/15
 //Professor: Brian Chen 
 //Class: CSE 002
-import java.util.Scanner;
+import java.util.Scanner; //Scanner is in the java.util package
 public class Root {
     public static void main (String[] args) { // main method required for every Java program
-    	Scanner myScanner;
-        myScanner = new Scanner(System.in);
+    	Scanner myScanner = new Scanner(System.in); //Create a Scanner object
         System.out.print("Enter a double, and I print its cube root: "); //Let user enter a number
-        double x = myScanner.nextDouble();
+        double x = myScanner.nextDouble(); //Enter the number x
         double guess = x/3; //the first step begin the guess is to divide the number by 3
         double guess1,guess2,guess3,guess4,guess5; //do the guess step for five times
         guess1 = (2*guess*guess*guess+x)/(3*guess*guess); //do the guess step for the first time
