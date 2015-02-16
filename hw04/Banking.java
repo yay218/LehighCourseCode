@@ -7,7 +7,7 @@
 //Banking Program
 
 import java.util.Scanner; //Scanner is in the java.util package
-	public class Practice {
+	public class Banking{
 
 		public static void main(String[] args) { // main method required for every Java program
 		System.out.println("If you want to deposit money, please enter 1;"); //tell teh user if he/she want to deposit money, please enter 1
