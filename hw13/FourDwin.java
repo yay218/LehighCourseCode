@@ -155,30 +155,30 @@ public class FourDwin{
 	
 	//add the method called sort3DArray
 	public static double[][][][] sort3DArray(double[][][][] array){
-		int number = 0;
-		int minNumber = 999999;
+	    int number = 0;
+	    int minNumber = 999999;
         for( int i = 0; i < array.length; i++ ){
             for( int j = 0; j < array[i].length; j++ ){
                 for( int k = 0; k < array[i][j].length; k++ ){
-                	minNumber = array[i][j][k].length;
+                    minNumber = array[i][j][k].length;
                     for( int m = k; m < array[i][j].length; m++){
                         if( array[i][j][m].length < minNumber ){
-                        	minNumber = array[i][j][m].length;
+                            minNumber = array[i][j][m].length;
                             number = m;
                         }
                         else if( array[i][j][m].length == minNumber ){
-                        	double minValue = 999999;
-                        	for( int n = k; n < array[i][j].length; n++){
-                            	for( int l = 0; l < array[i][j][n].length; l++ ){
-                            		if( array[i][j][n][l] < minValue ){
-                                    	minValue = array[i][j][n][l];
+                            double minValue = 999999;
+                            for( int n = k; n < array[i][j].length; n++){
+                                for( int l = 0; l < array[i][j][n].length; l++ ){
+                                    if( array[i][j][n][l] < minValue ){
+                                        minValue = array[i][j][n][l];
                                         number = n;
                                     }
                                 }
                             }
                         }
                         else{
-                        	continue;
+                            continue;
                         } 
                     }
                     double[] temp = array[i][j][k];
