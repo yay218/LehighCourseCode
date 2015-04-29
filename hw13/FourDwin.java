@@ -9,11 +9,9 @@
 //Create a ragged 4D array containing random doubles between 0 and 30
 
 
-//import scanner and public class
 import java.util.Scanner;
 
 public class FourDwin{
-	
 	
 	//add the main method
 	public static void main(String [] arg){
@@ -155,40 +153,40 @@ public class FourDwin{
 	
 	//add the method called sort3DArray
 	public static double[][][][] sort3DArray(double[][][][] array){
-	    int number = 0;
-	    int minNumber = 999999;
-        for( int i = 0; i < array.length; i++ ){
-            for( int j = 0; j < array[i].length; j++ ){
-                for( int k = 0; k < array[i][j].length; k++ ){
-                    minNumber = array[i][j][k].length;
-                    for( int m = k; m < array[i][j].length; m++){
-                        if( array[i][j][m].length < minNumber ){
-                            minNumber = array[i][j][m].length;
-                            number = m;
-                        }
-                        else if( array[i][j][m].length == minNumber ){
-                            double minValue = 999999;
-                            for( int n = k; n < array[i][j].length; n++){
-                                for( int l = 0; l < array[i][j][n].length; l++ ){
-                                    if( array[i][j][n][l] < minValue ){
-                                        minValue = array[i][j][n][l];
-                                        number = n;
-                                    }
-                                }
-                            }
-                        }
-                        else{
-                            continue;
-                        } 
-                    }
-                    double[] temp = array[i][j][k];
-                    array[i][j][k] = array[i][j][number];
-                    array[i][j][number] = temp;
-                }
-            }
-        }
-        return array;
-    }
+		int number = 0;
+		int minNumber = 999999;
+		for(int i = 0; i < array.length; i++){
+			for( int j = 0; j < array[i].length; j++){
+				for(int k = 0; k < array[i][j].length; k++){
+					minNumber = array[i][j][k].length;
+					for(int m = k; m < array[i][j].length; m++){
+						if(array[i][j][m].length < minNumber){
+							minNumber = array[i][j][m].length;
+							number = m;
+						}
+						else if(array[i][j][m].length == minNumber){
+							double minValue = 999999;
+							for(int n = k; n < array[i][j].length; n++){
+								for(int l = 0; l < array[i][j][n].length; l++){
+									if(array[i][j][n][l] < minValue){
+										minValue = array[i][j][n][l];
+										number = n;
+									}
+								}
+							}
+						}
+						else{
+							continue;
+						} 
+					}
+					double[] temp = array[i][j][k];
+					array[i][j][k] = array[i][j][number];
+					array[i][j][number] = temp;
+				}
+			}
+		}
+		return array;
+	}
 	
 	
 	//add the method called printArray
