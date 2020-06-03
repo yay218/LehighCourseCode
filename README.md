@@ -1,2 +1,2 @@
 # Course Code at Lehigh Univerisity
-## CSE2: Fundamental Java Programming
+- CSE2: Fundamental Java Programming
