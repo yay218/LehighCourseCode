@@ -1,0 +1,15 @@
+program sample
+
+
+
+  if i == 2 then
+
+     print i
+
+  else
+     print x
+  endif
+
+
+
+end program

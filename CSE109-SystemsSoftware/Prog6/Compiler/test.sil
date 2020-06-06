@@ -1,0 +1,7 @@
+program sample
+
+  if (x * 2) > y
+  then z=10
+  else z = 11 endif
+
+end program

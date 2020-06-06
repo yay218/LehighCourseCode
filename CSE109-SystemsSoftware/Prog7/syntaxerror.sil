@@ -1,0 +1,20 @@
+
+# This program has a several syntax errors #
+# Can your parser find them. #
+# Find the first, correct it and find the next #
+program sample
+set x = 3
+set i = x - 2
+while i < x + 7 do
+  if i / 2 * 2 == i then
+     print i, x
+  else
+     if x + i > x - i > i then
+       print x, i
+	 endif
+  endif
+  set x = x * 2 + ( ) 
+  print
+end
+
+end program

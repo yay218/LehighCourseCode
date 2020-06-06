@@ -1,0 +1,41 @@
+#
+# .profile
+#
+# commands in this file are executed every time you log on.
+#
+#
+
+# ... if you have a bin directory in your home directory,
+# ... prepend it to your PATH.
+if [ -d $HOME/bin ]; then
+  PATH=$HOME/bin:$PATH
+fi
+
+export MANPATH PATH TERM
+
+# ... this does not work for sh or ksh
+if [ -n "$BASH" ]; then
+  # ... explicitly setting HOME is needed locally to make use of the
+  # ... bash \w expansion in the shell prompt.
+  REALHOME=$HOME
+  HOME=`pwd`
+  export HOME REALHOME
+  PS1="`hostname`:\w% "; export PS1
+  # ... that's the basic version.  the next version limits the current
+  # ... directory name displayed to two nodes.  uncomment if you want
+  # ... to use this.
+  # PS1='\h \! ${PWD#${PWD%/*/*}/} $ '; export PS1
+  # ... auto-logout after one day of inactivity.
+  # TMOUT=86400; export TMOUT
+  # ... source .bashrc if present.
+  if [ -f .bashrc ]; then
+  . .bashrc
+  fi
+fi
+# Comment the next line if you want core files, or enter enable core
+# files for a single session with 'ulimit -c unlimited'.
+ulimit -c 0
+# Clear the screen on logout ...
+trap "clear" 0
+#
+PATH=$PATH:/proj/csc109/bin

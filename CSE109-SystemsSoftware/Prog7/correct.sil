@@ -1,0 +1,26 @@
+
+# This is a correct program #
+program sample
+set x = 3
+
+set i = x - 2
+while i < x + 7 do
+  if i / 2 * 2 == i then
+     print i, x
+  else
+     if x + i > x - i then
+       print x, i
+endif
+  endif
+  set x = x * 2
+  print x
+end
+
+set y = 2
+set i = y
+while i >= y and i <= 2 * y or y == 2 do
+   print i
+   set i = i + 1
+end 
+
+end program

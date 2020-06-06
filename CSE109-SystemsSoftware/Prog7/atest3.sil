@@ -1,0 +1,7 @@
+program atest3
+
+  set i = 5
+  set j = i * 7
+  print i, j
+
+end program
