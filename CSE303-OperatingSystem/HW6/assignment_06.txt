@@ -1,0 +1,122 @@
+CSE303 - Fall 2017
+Assignment #6: Security and Resource Management
+
+Purpose and General Guidelines:
+
+In this assignment, we will gain familiarity with concepts in security and resource management, while also demonstrating more ability with the tasks we've already discussed this semester.
+
+Getting Started
+
+  We provide a tar file with starter code at ~jloew/CSE303/cse303_p6.tgz. As in previous assignments, this code has several files, which contain incomplete functions. You must complete the functions in the files to satisfy the requirements of the assignment.
+
+By default, the starter code will allow the client to interact with the server via stdin. Messages sent from the client will be reported server side and will be echoed back to the client who will output that message back. You can use this behavior to control directly what the server is sent for testing purposes. You may want to keep a copy of this basic client around.
+
+Task #0: Tell us who you are
+
+You should edit the 'team.c' file to provide your name and email address. Until you do this, none of your programs will execute.
+
+Task #1: Implement a networked "file server"
+
+In this task, you are required to modify the Client.cpp and Server.cpp files, so that they provide the basic functionality described in the code. That is, client should be able to send files to the server, where they are stored, and it should also be able to retrieve those files, by name, from the server.
+
+To get this to work, you will need a protocol for how the two sides interact. For now, the protocol will consist of the following messages:
+
+    To PUT a file:
+      Client sends:
+        PUT <filename>\n
+        <# bytes>\n
+        <file contents>\n
+      Server sends:
+        OK\n
+       or
+        <Some one-line error message>\n
+
+    To GET a file:
+      Client sends:
+        GET <filename>\n
+      Server sends:
+        <Some one-line error message>\n
+       or
+        OK <filename>\n
+        <# bytes>\n
+        <file contents>\n
+
+<filename> may contain spaces (not leading, nor trailing, only between words) but will not contain tabs or newlines. <filename> will consist of "normal" characters accepted by isprint(). You will not handle any directory traversals in the <filename>.
+<# bytes> is a base-10 number. 
+<file contents> is the raw data representing the file.
+<Some one-line error message> is an error message that the receiver must print out. The server should not crash because of this - it must be able to gracefully handle errors and simply report them (you may, and probably should, report them to standard error on the recipient side).
+
+Be aware that you may get gibberish or malformed requests and will need to reject them if they fail.
+
+Note that each line should end with a newline, including file contents, which will be a raw byte stream (be wary of strlen). The server should send an EOF and terminate that connection after sending its reply.
+
+The format of an error should be: ERROR (#): <Error String>
+
+Use the errno value and errno string for these messages where available, if not, come up with your own.
+
+You may assume that (a) the client will only send files from its local directory, (b) the server will store files in its local directory, (c) the server should send an error if the file is not found (for any file related error actually), and (d) any command that leads to an overwrite of a file is intentional.
+
+Note that you should not run the client and server from the same folder when testing!
+
+This should go without saying, but, no global variables.
+
+Task #2: Multi-ball, I mean Multi-Threading
+
+A word of warning: You may not want to approach this assignment in order. If you do, you may have to constantly re-adapt your code to handle the subsequent tasks and end up creating more problems than you'd care for.
+
+Allow the server to handle multiple connections at once (instead of queueing successive connections). Since the file storage itself is essentially shared data, this makes it difficult to use fork to accomplish this correctly (we aren't going to stop you but you better be careful). By using threads (you can use C++ threads if you like), we can share execution state amongst the children. Specifically, we want to use locks to make sure that we don't see files in intermediate states.
+
+When file X is accessed, use a lock to prevent external access to file X until we release the lock. Other threads should still be able to access files. You will probably want to use something like a map of filenames to locks, make sure you handle concurrency on that data structure correctly - you will need to pass a pointer to this data structure to the child threads so they can access it.
+
+You may not lock the file before spawning the child thread. It should be possible that if two requests come in for file X that the second request that the parent handled gets serviced first.
+
+When executing the server, use "-m" to enable this mode.
+
+This mechanism should not use a different protocol as it is server-side.
+
+Task #3: Add checksums
+
+In this task, you should add a checksum line immediately before file contents during a transmission. You should use the md5 algorithm, which can be found in this header:
+  
+    #include<openssl/md5.h>
+
+To avoid clashing with prior tasks, use "PUTC", "GETC" and "OKC" to specify that a checksum is involved.
+
+Note that the server should verify the checksum before sending OKC after a PUTC - the resulting file should not be saved. After a GETC, the client should compute the checksum, and if it doesn't match, it should cancel the GETC and print an error.
+
+Task #4: Add an LRU cache to the server
+
+In this task, you should add an LRU cache (a real LRU implementation, not an approximation) to your server. Your cache should store the entire contents of the N most recently used files in memory. On a GET/GETC, you should serve the file without accessing the disk at all. On a PUT/PUTC, you should save the file to disk, and also place it in the cache, so that you can satisfy future GET/GETCs quickly.
+
+Note that we have built a bug into the above specification. It is intentional. Suppose the client PUT/PUTCs file X. Then suppose that the administrator deletes X from the folder where the server is running. X should remain cached until sufficient GET/GETCs and PUT/PUTCs are issued to cause X to leave the cache. Do not remove this bug. We like it.
+
+When lru_size is 0, this will have no effect, you may default to prior behavior as if there was no LRU cache. We will not give you a negative lru_size.
+
+This mechanism should not use a different protocol as it is server-side.
+
+Task #5: Multithreaded Adaptation
+
+Adapt Task #4 such that it works properly with the expected behavior of Task #2.
+
+This will only take effect if lru_size is greater than 0 and if multithreading is enabled.
+
+Task #6: Add encryption to the client
+
+The bug in Task #4 should give you pause: an administrator can access your files at any time! To secure them, extend your Client.cpp so that it encrypts files before PUT/PUTC, and decrypts them after GET/GETC. You may assume that the user has run the following commands in the working directory:
+
+    openssl genrsa -out private.pem 2048
+    openssl rsa -in private.pem -outform PEM -pubout -out public.pem
+
+Thus you may assume that there are files "private.pem" and "public.pem" that contain the encryption keys to use. Be sure to use the correct key before sending content.
+
+This mechanism should not use a different protocol as it is client-side.
+
+Note that the server is untrusted, and should not know anything about the encryption. You should be able to use functions such as PEM_read_RSA_PUBKEY() to load your encryption keys, and functions such as RSA_public_encrypt() to encrypt and decrypt your data.  Note, too, that RSA is a 2048-bit algorithm, so you may need to be clever about how you encrypt the data (i.e., you may need to break it into 256-byte blocks). Remember that RSA is expensive and we probably who use something like AES (or some symmetric key) to do something like this.
+
+Make sure to use the recommended padding, not the most widely used padding (use RSA_PKCS1_OAEP_PADDING).
+
+Turn-In Instructions
+
+To turn in your solutions, type 'make submit'.
+
+You may turn in your solutions as many times as you like. The last turn-in received before grading begins is the only turn-in that will be graded.

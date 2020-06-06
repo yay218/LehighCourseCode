@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!--
+CSE264 Class Project - Word Search Game
+Yang Yi
+yay218
+04/27/2017
+-->
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="stylesheet" type="text/css" href="styles.css" />
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" ></script>
+        <script src="https://cdn.socket.io/socket.io-1.3.4.js"></script>
+        <script src="scripts.js" ></script>
+        
+        <title>Word Search Game</title>
+
+    </head>
+    <body>
+        <div id="container">
+            <div>
+                <h1 id = "title">Welcome to Word Search,  <span id="lname"></span></h1>
+            </div>
+            <div>
+                <form>
+                    User Name: <input type="text" name="username" id="username"/>
+                    <input type="button" value="Register" id="login"/>
+                </form> 
+            </div>
+            <br>
+            <div>
+                <input type="button" id="puzzle" value = "Get Puzzle"/>
+            </div>
+        
+        
+            <br>
+            <div id="theme">
+
+            </div>
+
+            <br>
+            <div id="playboard">
+                <div>
+                    <table id="grid" cellspacing="0" cellpadding="0">
+                    </table>
+                </div>
+                <div>
+                    <input type="button" id="submit" value = "Submit Word"/>
+                </div>
+            </div>
+
+            <br>
+            <div id="scoreboard" style="float: left">
+                <table id="leaderboard">
+                    <thead id="head">
+                        <tr><td colspan="2">Leader Board</td></tr>
+                        <tr><td id = "name">Name</td><td id = "score">Score</td></tr>
+                    </thead>
+                    <tbody id="body">
+                    </tbody>
+                </table> 
+            </div>
+            <p id = "list">Text List</p>
+            <div id="text" style="float: left">
+            </div>
+        </div>
+    </body>
+</html>

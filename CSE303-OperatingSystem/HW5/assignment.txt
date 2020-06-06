@@ -1,0 +1,77 @@
+CSE303 - Fall 2017
+Assignment #5: Concurrency
+
+Purpose and General Guidelines:
+
+  In this assignment, we will gain familiarity with concepts in concurrency by designing a few concurrent data structures that could be used to construct parts of a high-performance value storage service.
+
+  Note that in this assignment, we will be using C++. This should not have a significant impact on the ease or difficulty of the assignment, but will require that you use a sufficiently modern C++ compiler. (Recall that you can type 'module load gcc-7.1.0' to get a modern C++ compiler).
+
+Getting Started
+
+  We provide a tar file with starter code at ~jloew/CSE303/cse303_p5.tgz. As in previous assignments, this code has several files, which contain incomplete functions. You must complete the functions in the files to satisfy the requirements of the assignment.
+
+Task #0: Tell us who you are
+
+  You should edit the 'team.c' file to provide your name and email address. Until you do this, none of your programs will execute.
+
+Notes, Warnings:
+
+  Do not ask the professor(s) about how you should manipulate the parameters for testing. You are expected to have some understanding of how the changes should impact the performance of your code. This applies for the entire assignment. Being able to analyze and anticipate expected results due to your changes is an important skill.
+
+  The tester given does not check the integrity of your dataset, only the overall concurrency behavior. These will be tested in the final submission. You may modify bench.cc and multikeybench.cc in order to test the data integrity yourself, those files will not be part of your submission.
+
+  There are some functions that are given under the pretense that they don't need to do anything but still exist. Do not edit those funcitons.
+
+Task #1: Implement a simple lock-based sorted linked list (10 points)
+
+  Back in assignment #1, you built a "mylist" program, which could perform operations on a sorted linked list.  In this task, you will do something similar. You will create a concurrent list ("clist") that can perform insert, lookup, and remove operations on a sorted linked list containing integer values. However, now your list will be tested through a benchmark harness that executes multiple threads simultaneously.
+
+  To get this to work, you will need to use locks. Since we are using C++, you can use the std::mutex lock, instead of the more cumbersome pthread_mutex_t. If you do not understand why std::mutex is easier, you should definitely read about std::lock_guard, and think about how to return a value from a function when that function is protected by a lock.
+
+  Note: more threads != more throughput. Only one thread should be able to access your list at a time, so adding threads should not result in speedup. Also, be careful as you play with the parameters to the benchmark. Experiments with very large lists will take a very long time.
+
+
+Task #2: Employ readers/writer locking to increase concurrency (10 points)
+
+  Next, let's try to create a concurrent sorted linked list that makes use of readers/writer locking. Although, readers/writer locking is part of C++17, you are not allowed to use it for this task. You'll need to regress to using pthread-style locks, and pthread_rwlock_t. See https://docs.oracle.com/cd/E19455-01/806-5257/6je9h032u/index.html for more information.
+
+  Using a readers/writer lock, you should be able to see some scalability for high read-only ratios and larger key ranges. However, there remains a limitation: any modification to the data structure requires mutual exclusion, and eschews all concurrency. This weakness will motivate our next task.
+
+Task #3: Use your clist to create a fixed-size chash (15 points)
+
+  This will be a very straightforward task: you will re-use your concurrent list as the building block for a concurrent hash table. Your hash table should consist of a fixed-size (but configurable) array of concurrent  lists, and your hash function need only do modular arithmetic on the integer key in order to choose a bucket.
+
+  To test your hash, be sure to experiment with the parameters to the benchmark. Note, too, that you may not see the good speedup that you expect. This could be due to data structure design issues, or due to other users on the machine when you run tests.
+
+Task #4: Create a more effective hash table using sentinel nodes (15 points)
+
+  Part of the problem with our chash is that our design features an array of linked lists, each of which consists of a lock and a head pointer. That means that concurrent operations on consecutive buckets of the hash will live in the same cache line, and result in false sharing and coherence misses.
+
+  A solution to the problem is to introduce "sentinel" nodes. In our new hash table (the shash, or sentinel hash), each bucket points to a sentinel node. The sentinel node contains a lock, as well as a pointer to the first element in the actual list. In this manner, the bucket pointers can be tightly packed into an array without introducing false sharing, because they are /immutable/.
+
+  Your implementation should use a C++ std::mutex as the lock type. You will probably find that the presence of a sentinel node has the added benefit of simplifying your linked list code.
+
+Task #5: Support multiple keys (20 points)
+
+  Create a new sentinel hash that can perform an operation on multiple entries at the same time. Our 'shash2.h' file defines this new api, and the 'multikeybench.cc' file uses the new API.
+
+  The challenge with this new API is that your shash2 implementation must be deadlock-free. This will require you to create some sort of order in which to acquire locks. You will also need an intelligent strategy for ensuring that your operations are both (a) serializable, and (b) correct in the face of intra-operation hash collisions.
+
+  This part will be graded on the overall throughput of the object. You only need to optimize insert/remove/lookup. The other functions will be used to validate but not in the performance run of the code. Do not try to subvert the performance testing.
+
+Task #6: Tree Trickiness (30 points)
+
+  Create an AVL tree that, just like task #5, can perform an operation on multiple entries at the same time. Our 'tree.h' file defines the new api, and the 'multikeybench.cc' file uses the new API.
+
+  The challenge with the AVL tree is not just that your implementation must be deadlock-free but that you must handle the rebalancing of the tree while concurrent actions are occurring.
+
+  The naive solution of locking down the entire tree for each operation will score minimal points. Consider it a good starting point. 
+
+  This part will be graded on the overall throughput of the object. You only need to optimize insert/remove/lookup. The other functions will be used to validate but not in the performance run of the code. Do not try to subvert the performance testing.
+
+Turn-In Instructions
+
+  To turn in your solutions, type 'make turnin'.
+
+  You may turn in your solutions as many times as you like. The last turn-in received before grading begins is the only turn-in that will be graded.

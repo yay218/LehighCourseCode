@@ -1,0 +1,64 @@
+/* 
+CSE264 Class Project - Word Search Game
+Yang Yi
+yay218
+04/27/2017 
+*/
+
+#title {
+    font-size: 20pt;
+    margin-left: 15px;
+    font-family: Arial;
+}
+
+
+#login, #puzzle, #submit {
+    font-size: 15pt;
+    margin-left: 15px;
+    font-family: Arial;
+}
+
+form {
+    font-size: 15pt;
+    margin-left: 15px;
+    font-family: Arial;
+}
+
+#theme {
+    font-size: 15pt;
+    margin-left: 15px;
+    font-family: Arial;
+}
+
+#playboard td {
+    padding: 10px;
+}
+
+#playboard{
+    overflow: scroll;
+}
+
+#leaderboard {
+    font-size: 15pt;
+    margin-left: 15px;
+    font-family: Arial;
+    width: 800px;
+}
+
+#name, #score {
+    font-size: 12pt;
+    margin-left: 15px;
+    font-family: Arial;
+    width: 600px;
+}
+
+#list {
+    font-size: 15pt;
+    margin-left: 30px;
+    font-family: Arial;
+}
+#text li {
+    font-size: 12pt;
+    margin-left: 15px;
+    font-family: Arial;
+}

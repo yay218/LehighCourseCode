@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+Yang Yi
+CSE264 Homework 2
+02/20/2017
+-->
+<html>
+    <head>
+        <title>Calculator</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" href="style.css" type="text/css"/>
+
+    </head>
+    <body>
+        <div id="calculator">
+            
+            <table id="calculatorTable" border="2" cellpadding="3" cellspacing="3">
+                <tr>
+                    <td colspan="4"><p id="display">0</p></td>
+                </tr>
+                <tr>
+                <td colspan="2"><input type="button" id="clear" value="C" onclick="clear()"></td>
+                <td colspan="2"><input type="button" id="push" value="Push" onclick="push()"></td>
+                </tr>
+                
+                <tr>
+                <td><input type="button" id="seven" value="7" onclick="number(7)"></td>
+                <td><input type="button" id="eight" value="8" onclick="number(8)"></td>
+                <td><input type="button" id="nine" value="9" onclick="number(9)"></td>
+                <td><input type="button" id="divide" value="/" onclick="divide()"></td>
+                </tr>
+                
+                <tr>
+                <td><input type="button" id="four" value="4" onclick="number(4)"></td>
+                <td><input type="button" id="five" value="5" onclick="number(5)"></td>
+                <td><input type="button" id="six" value="6" onclick="number(6)"></td>
+                <td><input type="button" id="multiply" value="*" onclick="multiply()"></td>
+                </tr>
+                
+                <tr>
+                <td><input type="button" id="one" value="1" onclick="number(1)"></td>
+                <td><input type="button" id="two" value="2" onclick="number(2)"></td>
+                <td><input type="button" id="three" value="3" onclick="number(3)"></td>
+                <td><input type="button" id="substract" value="-" onclick="substract()"></td>
+                
+                </tr>
+                <tr>
+                <td><input type="button" id="zero" value="0" onclick="number(0)"></td>
+                <td><input type="button" id="dot" value="." onclick="dot()"></td>
+                <td><input type="button" id="changeSign" value="+/-" onclick="changesign()"></td>
+                <td><input type="button" id="add" value="+" onclick="add()"></td>
+                </tr>
+            </table>
+        </div>
+        <script src = "Calculator.js"></script>
+    </body>
+</html>
