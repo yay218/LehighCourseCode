@@ -1,0 +1,21 @@
+1) TRUE FALSE FALSE FALSE FALSE
+
+2) "1" "2" "3" "4" "Y" "Z"
+
+3) -2 -1  0  1  2
+
+4) False
+
+5) True
+
+6) #
+
+7) library("MASS")
+
+8) ag
+
+   bh
+
+   ce
+
+   df

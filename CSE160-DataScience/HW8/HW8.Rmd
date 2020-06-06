@@ -1,0 +1,93 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+
+Yang Yi
+10/26/2017
+HW8
+
+Install and load kknn library
+```{r}
+#install.packages("kknn")
+library(kknn)
+```
+
+Load the train and test data
+```{r}
+train<-read.csv("http://www.cse.lehigh.edu/~brian/course/2017/datascience/TitanicTrain.csv", sep = ",")
+test<-read.csv("http://www.cse.lehigh.edu/~brian/course/2017/datascience/TitanicTest.csv", sep = ",")
+```
+
+Clean the data
+Transform the age attribute to an integer value in both data sets since the original data provided age with some decimal points. I do this using round()) function in R on the age columns of both training set and test set to coerce a numeric value into an integer.
+For the fare columns, the functions of round() is utilized in order to format the fare values into numbers with 2 decimal places to accurately represent the format of a price. 
+```{r}
+train$age <- round(train$age, digits = 0)
+train$fare <- round(train$fare, digits = 2)
+test$age <- round(test$age, digits = 0)
+test$fare <- round(test$fare, digits = 2)
+```
+
+The glm model
+Factor the survived, since str(train) shows that survived is integer, so factor it, and build the model.
+Use the model on the test set and get predictions, make a confusion matrix, and calculate (and output) precision, recall, f-measure and accuracy
+```{r}
+glm_model <- glm(formula = as.factor(survived) ~ pclass + fare + sex + age + embarked, data=train, family=binomial)
+glm_prediction <- predict(glm_model, test, type = 'response')
+
+glm_table <- table(glm_prediction > 0.5, test$survived)
+glm_table
+
+
+glm_TP <- glm_table[1,1]
+glm_FP <- glm_table[1,2]
+glm_FN <- glm_table[2,1]
+glm_TN <- glm_table[2,2]
+
+glm_precision <- glm_TP / (glm_TP + glm_FP)
+glm_recall <- glm_TP / (glm_TP + glm_FN)
+glm_fmeasure <- 2*(glm_precision * glm_recall) / (glm_precision + glm_recall)
+glm_accuracy <- sum(diag(glm_table)) / sum(glm_table)
+
+sprintf("The precision for glm model is: %s", glm_precision)
+sprintf("The recall for glm model is: %s", glm_recall)
+sprintf("The f measure for glm model is: %s", glm_fmeasure)
+sprintf("The accuracy for glm model is: %s", glm_accuracy)
+
+```
+
+The knn model
+Use the model on the test set and get predictions, make a confusion matrix, and calculate (and output) precision, recall, f-measure and accuracy
+```{r}
+kknn_model <- kknn(survived ~ pclass + sex + age + fare + embarked, train = train, test = test, distance = 1)
+fit <- fitted(kknn_model)
+
+kknn_table <- table(fit > 0.5, test$survived)
+kknn_table
+
+kknn_TP <- kknn_table[1,1]
+kknn_FP <- kknn_table[1,2]
+kknn_FN <- kknn_table[2,1]
+kknn_TN <- kknn_table[2,2]
+
+kknn_precision <- kknn_TP / (kknn_TP + kknn_FP)
+kknn_recall <- kknn_TP / (kknn_TP + kknn_FN)
+kknn_fmeasure <- 2 * (kknn_precision * kknn_recall) / (kknn_precision + kknn_recall)
+kknn_accuracy <- sum(diag(kknn_table)) / sum(kknn_table)
+
+sprintf("The precision for knn model is: %s", kknn_precision)
+sprintf("The recall for knn model is: %s", kknn_recall)
+sprintf("The f measure for knn model is: %s", kknn_fmeasure)
+sprintf("The accuracy for knn model is: %s", kknn_accuracy)
+
+```
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file).
